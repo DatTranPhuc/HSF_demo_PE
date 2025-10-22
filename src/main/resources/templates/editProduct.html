@@ -21,36 +21,41 @@
 
         <div class="form-group">
             <label for="productName">Product Name</label>
-            <input type="text" id="productName" th:field="*{productName}" placeholder="e.g. PlayStation 5">
+            <input type="text" id="productName" th:field="*{productName}" placeholder="e.g. PlayStation 5"
+                   minlength="5" maxlength="50" required>
             <div th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="field-error"></div>
         </div>
 
         <div class="form-group">
             <label for="price">Price</label>
-            <input type="number" id="price" th:field="*{price}" step="0.01" min="0" placeholder="e.g. 499.99">
+            <input type="number" id="price" th:field="*{price}" step="1" min="100" placeholder="e.g. 499"
+                   required>
             <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="field-error"></div>
         </div>
 
         <div class="form-group">
             <label for="stock">Stock</label>
-            <input type="number" id="stock" th:field="*{stock}" min="0" placeholder="e.g. 100">
+            <input type="number" id="stock" th:field="*{stock}" min="0" max="1000" placeholder="e.g. 100"
+                   required>
             <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="field-error"></div>
         </div>
 
+
         <div class="form-group">
-            <label for="createAt">Created At</label>
-            <input type="date" id="createAt" th:field="*{createAt}">
-            <div th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}" class="field-error"></div>
+            <label for="createdAt">Created At</label>
+            <input type="date" id="createdAt" th:field="*{createdAt}" required>
+            <div th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}" class="field-error"></div>
         </div>
 
         <div class="form-group">
             <label for="cateId">Category</label>
-            <select id="cateId" name="cateId">
+            <!-- Form post cateId theo controller -->
+            <select id="cateId" name="cateId" required>
                 <option value="">-- Select a Category --</option>
                 <option th:each="category : ${categories}"
                         th:value="${category.cateId}"
                         th:text="${category.cateName}"
-                        th:selected="${sonyProducts.sonyCategories != null and sonyProducts.sonyCategories.cateId == category.cateId}">
+                        th:selected="${sonyProducts.category != null and sonyProducts.category.cateId == category.cateId}">
                     Category Name
                 </option>
             </select>

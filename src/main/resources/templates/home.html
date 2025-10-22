@@ -38,6 +38,7 @@
         </form>
     </div>
 
+    <!-- Top stock (Admin only) -->
     <div th:if="${session.loggerInUser.roleId == 1 and topProducts != null and !topProducts.isEmpty()}"
          class="content-card card">
         <div class="content-card-header">
@@ -54,13 +55,14 @@
             <tbody>
             <tr th:each="product : ${topProducts}">
                 <td th:text="${product.productName}">Product Name</td>
-                <td th:text="${product.sonyCategories.cateName}">Category</td>
+                <td th:text="${product.category.cateName}">Category</td>
                 <td th:text="${product.stock}">Stock</td>
             </tr>
             </tbody>
         </table>
     </div>
 
+    <!-- All products -->
     <div class="content-card card">
         <div class="content-card-header">
             <h2><i class="fa-solid fa-boxes-stacked" style="color: #0d6efd;"></i> All Products</h2>
@@ -87,8 +89,8 @@
                 <td th:text="${product.productName}">Product Name</td>
                 <td th:text="${'$' + #numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">Price</td>
                 <td th:text="${product.stock}">Stock</td>
-                <td th:text="${#temporals.format(product.createAt, 'dd-MM-yyyy')}">Created At</td>
-                <td th:text="${product.sonyCategories.cateName}">Category</td>
+                <td th:text="${#temporals.format(product.createdAt, 'dd-MM-yyyy')}">Created At</td>
+                <td th:text="${product.category.cateName}">Category</td>
 
                 <td th:if="${session.loggerInUser.roleId == 1}" class="actions">
                     <a th:href="@{/editProduct/{id}(id=${product.productId})}"

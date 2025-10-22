@@ -2,14 +2,16 @@ package hsf.fa25.pe.demo_pe3.service;
 
 import hsf.fa25.pe.demo_pe3.entity.SonyCategories;
 import hsf.fa25.pe.demo_pe3.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-@Service
+
+@Service("categoryServices")
+@RequiredArgsConstructor
 public class CategoryServicesImpl implements CategoryServices {
-    @Autowired
-    CategoryRepository sonyCategoriesRepository;
+
+    private final CategoryRepository sonyCategoriesRepository;
 
     @Override
     public boolean addSonyCategories(SonyCategories sonyCategories) {

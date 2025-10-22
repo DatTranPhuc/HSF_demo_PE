@@ -8,7 +8,7 @@ public interface ProductRepository extends JpaRepository<SonyProducts, Long> {
     SonyProducts findByProductName(String productName);
 
     List<SonyProducts> findAllByOrderByProductIdDesc();
-    List<SonyProducts> findTop3BySonyCategories_CateIdOrderByStockDesc(int cateId);
+    List<SonyProducts> findTop3ByCategory_CateIdOrderByStockDesc(int cateId);
 
     List<SonyProducts> findByProductNameContainingIgnoreCase(String productName);
 }

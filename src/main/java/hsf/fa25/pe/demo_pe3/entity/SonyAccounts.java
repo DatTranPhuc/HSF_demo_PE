@@ -14,7 +14,7 @@ public class SonyAccounts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id") // nếu DB là "AccountID" thì đổi lại
+    @Column(name = "account_id")
     private Integer accountId;
 
     @Column(name = "role_id", nullable = false)

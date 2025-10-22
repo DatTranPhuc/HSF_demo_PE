@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -33,34 +34,29 @@ public class HomeController {
     public ModelAndView showHomePage(HttpSession session,
                                      @RequestParam(value = "search", required = false) String searchKeyword) {
         SonyAccounts accounts = (SonyAccounts) session.getAttribute("loggerInUser");
-        ModelAndView modelAndView = new ModelAndView();
-
         if (accounts == null) {
-            modelAndView.setViewName("redirect:/login");
-            return modelAndView;
+            return new ModelAndView("redirect:/login");
         }
-
         if (accounts.getRoleId() != 1 && accounts.getRoleId() != 2) {
-            modelAndView.setViewName("redirect:/403");
-            return modelAndView;
+            return new ModelAndView("redirect:/403");
         }
 
-        List<SonyProducts> sonyProductsList;
-        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-            sonyProductsList = productsService.searchProductsByName(searchKeyword);
-            modelAndView.addObject("searchKeyword", searchKeyword);
-        } else {
-            sonyProductsList = productsService.getAllSonyProducts();
-        }
-        modelAndView.addObject("products", sonyProductsList);
+        List<SonyProducts> sonyProductsList =
+                (searchKeyword != null && !searchKeyword.trim().isEmpty())
+                        ? productsService.searchProductsByName(searchKeyword)
+                        : productsService.getAllSonyProducts();
 
+        // luôn add topProducts để tránh null trong view
+        List<SonyProducts> topProducts = Collections.emptyList();
         if (accounts.getRoleId() == 1) {
-            List<SonyProducts> topProducts = productsService.getTop3ProductsByStockInEachCategory();
-            modelAndView.addObject("topProducts", topProducts);
+            topProducts = productsService.getTop3ProductsByStockInEachCategory();
         }
 
-        modelAndView.setViewName("home");
-        return modelAndView;
+        ModelAndView mv = new ModelAndView("home");
+        mv.addObject("products", sonyProductsList);
+        mv.addObject("topProducts", topProducts);
+        mv.addObject("searchKeyword", searchKeyword);
+        return mv;
     }
 
     @GetMapping("/deleteProduct/{id}")
@@ -76,15 +72,15 @@ public class HomeController {
     @GetMapping("/editProduct/{id}")
     public ModelAndView showEditProductPage(HttpSession session, @PathVariable long id) {
         SonyAccounts accounts = (SonyAccounts) session.getAttribute("loggerInUser");
-        ModelAndView modelAndView = new ModelAndView();
-        List<SonyCategories> sonyCategories = categoriesService.getAllSonyCategories();
         if (accounts == null || (accounts.getRoleId() != 1)) {
             return new ModelAndView("redirect:/403");
         }
         SonyProducts sonyProducts = productsService.getSonyProductById(id);
+        List<SonyCategories> sonyCategories = categoriesService.getAllSonyCategories();
+
+        ModelAndView modelAndView = new ModelAndView("editProduct");
         modelAndView.addObject("sonyProducts", sonyProducts);
         modelAndView.addObject("categories", sonyCategories);
-        modelAndView.setViewName("editProduct");
         return modelAndView;
     }
 
@@ -108,20 +104,23 @@ public class HomeController {
         return "redirect:/home";
     }
 
-
     @GetMapping("/addNewItem")
     public ModelAndView showAddNewItemPage(HttpSession session) {
         SonyAccounts accounts = (SonyAccounts) session.getAttribute("loggerInUser");
-        ModelAndView modelAndView = new ModelAndView();
-        List<SonyCategories> sonyCategories = categoriesService.getAllSonyCategories();
         if (accounts == null || (accounts.getRoleId() != 1)) {
             return new ModelAndView("redirect:/403");
         }
-        modelAndView.addObject("sonyProducts", new SonyProducts());
+        List<SonyCategories> sonyCategories = categoriesService.getAllSonyCategories();
+
+        SonyProducts form = new SonyProducts();
+        form.setCreatedAt(java.time.LocalDate.now());
+
+        ModelAndView modelAndView = new ModelAndView("addNewItem");
+        modelAndView.addObject("sonyProducts", form);
         modelAndView.addObject("categories", sonyCategories);
-        modelAndView.setViewName("addNewItem");
         return modelAndView;
     }
+
 
     @PostMapping("/addNewItem")
     public String addNewItem(@Valid SonyProducts sonyProducts,
