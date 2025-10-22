@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="card-layout glass-card">
+    <h1>Add New Product</h1>
+    <form th:action="@{/addNewItem}" th:object="${sonyProducts}" method="post">
+
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" th:field="*{productName}" placeholder="e.g. PlayStation 5">
+            <i class="input-icon fa-solid fa-box-archive"></i>
+            <div th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" id="price" th:field="*{price}" step="0.01" min="0" placeholder="e.g. 499.99">
+            <i class="input-icon fa-solid fa-dollar-sign"></i>
+            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" id="stock" th:field="*{stock}" min="0" placeholder="e.g. 100">
+            <i class="input-icon fa-solid fa-cubes"></i>
+            <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="createAt">Created At</label>
+            <input type="date" id="createAt" th:field="*{createAt}" style="padding-left: 50px;">
+            <i class="input-icon fa-solid fa-calendar-days"></i>
+            <div th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}" class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="cateId">Category</label>
+            <select id="cateId" name="cateId">
+                <option value="">-- Select a Category --</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.cateId}"
+                        th:text="${category.cateName}">
+                    Category Name
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-circle-plus"></i> Add Product
+        </button>
+        <a th:href="@{/home}" class="btn-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+    </form>
+</div>
+
+</body>
+</html>
