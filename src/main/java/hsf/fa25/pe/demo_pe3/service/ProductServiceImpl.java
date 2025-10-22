@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
     @Autowired
-    CategoryServices categoryServices ;
+    CategoryServices categoryServices;
 
 
     @Override
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (SonyCategories category : categories) {
             List<SonyProducts> top3hHighestStock = productRepository
-                    .findTop3BySonyCategories_CateIdOrderByStockDesc(category.getCateId());
+                    .findTop3ByCategory_CateIdOrderByStockDesc(category.getCateId());
             result.addAll(top3hHighestStock);
         }
 
@@ -79,6 +79,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<SonyProducts> searchProductsByName(String productName) {
-        return List.of();
+        if (productName == null || productName.trim().isEmpty()) {
+            return productRepository.findAllByOrderByProductIdDesc();
+        }
+        return productRepository.findByProductNameContainingIgnoreCase(productName.trim());
     }
 }
