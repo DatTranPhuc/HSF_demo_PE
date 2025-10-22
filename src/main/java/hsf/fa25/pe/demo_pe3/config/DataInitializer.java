@@ -67,7 +67,7 @@ public class DataInitializer implements CommandLineRunner {
             products.setProductName("PlayStation 5 Console");
             products.setPrice(500);
             products.setStock(25);
-            products.setCreateAt(LocalDate.of(2025, 1, 10));
+            products.setCreatedAt(LocalDate.of(2025, 1, 10));
             // Lấy category "Gaming"
             products.setCategory(categoriesService.getCategoryByCateName("Gaming"));
             productsService.addSonyProducts(products);
@@ -76,7 +76,7 @@ public class DataInitializer implements CommandLineRunner {
             products1.setProductName("SRS-XV900 X-Series Speaker");
             products1.setPrice(900);
             products1.setStock(12);
-            products1.setCreateAt(LocalDate.of(2025, 2, 15));
+            products1.setCreatedAt(LocalDate.of(2025, 2, 15));
             // Lấy category "Speakers"
             products1.setCategory(categoriesService.getCategoryByCateName("Speakers"));
             productsService.addSonyProducts(products1);
@@ -85,7 +85,7 @@ public class DataInitializer implements CommandLineRunner {
             products2.setProductName("CFexpress Type B Memory Card");
             products2.setPrice(400);
             products2.setStock(50);
-            products2.setCreateAt(LocalDate.of(2025, 3, 20));
+            products2.setCreatedAt(LocalDate.of(2025, 3, 20));
             // Lấy category "Storage"
             products2.setCategory(categoriesService.getCategoryByCateName("Storage"));
             productsService.addSonyProducts(products2);
@@ -94,7 +94,7 @@ public class DataInitializer implements CommandLineRunner {
             products3.setProductName("INZONE H9 Wireless Gaming Headset");
             products3.setPrice(300);
             products3.setStock(30);
-            products3.setCreateAt(LocalDate.of(2025, 4, 5));
+            products3.setCreatedAt(LocalDate.of(2025, 4, 5));
             // Lấy category "Gaming"
             products3.setCategory(categoriesService.getCategoryByCateName("Gaming"));
             productsService.addSonyProducts(products3);

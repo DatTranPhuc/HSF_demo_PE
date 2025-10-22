@@ -17,10 +17,10 @@ public class SonyCategories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cateId")
+    @Column(name = "cate_id")
     private Integer cateId;
 
-    @Column(name = "cateName", nullable = false, length = 100)
+    @Column(name = "cate_name", nullable = false, length = 100)
     private String cateName;
 
     @Column(name = "status", nullable = false)
