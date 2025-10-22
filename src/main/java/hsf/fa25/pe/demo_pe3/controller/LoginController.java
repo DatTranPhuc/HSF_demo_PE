@@ -16,7 +16,7 @@ public class LoginController {
     @Autowired
     AccountService accountsSerivce;
 
-    @GetMapping
+    @GetMapping("/")
     public String loginPage() {
         return "redirect:/login";
     }
