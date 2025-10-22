@@ -33,15 +33,15 @@ public class SonyProducts {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "create_at", nullable = false)
     private LocalDate createdAt;
 
-    // 👇 Tên field là "category" (quan trọng để khớp mappedBy ở Category)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cate_id", nullable = false)
     private SonyCategories category;
 
-    // Nếu bạn muốn bỏ @PrePersist như đã nói trước đây, hãy xóa block này.
+
     @PrePersist
     protected void onCreate() {
         if (this.createdAt == null) this.createdAt = LocalDate.now();

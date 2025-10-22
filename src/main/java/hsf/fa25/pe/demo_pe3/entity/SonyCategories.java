@@ -26,7 +26,7 @@ public class SonyCategories {
     @Column(name = "status", nullable = false)
     private String status;
 
-    // 👇 mappedBy PHẢI = tên field ở SonyProducts (ở trên là "category")
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<SonyProducts> sonyProducts = new ArrayList<>();
 }

@@ -11,6 +11,7 @@
 
 <div class="card-layout glass-card">
     <h1>Add New Product</h1>
+
     <form th:action="@{/addNewItem}" th:object="${sonyProducts}" method="post">
 
         <div class="form-group">
@@ -34,16 +35,17 @@
             <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="field-error"></div>
         </div>
 
+
         <div class="form-group">
-            <label for="createAt">Created At</label>
-            <input type="date" id="createAt" th:field="*{createAt}" style="padding-left: 50px;">
+            <label for="createdAt">Created At</label>
+            <input type="date" id="createdAt" th:field="*{createdAt}" style="padding-left: 50px;">
             <i class="input-icon fa-solid fa-calendar-days"></i>
-            <div th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}" class="field-error"></div>
+            <div th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}" class="field-error"></div>
         </div>
 
         <div class="form-group">
             <label for="cateId">Category</label>
-            <select id="cateId" name="cateId">
+            <select id="cateId" name="cateId" required>
                 <option value="">-- Select a Category --</option>
                 <option th:each="category : ${categories}"
                         th:value="${category.cateId}"

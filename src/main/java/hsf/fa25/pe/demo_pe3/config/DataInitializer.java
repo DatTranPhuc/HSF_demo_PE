@@ -1,6 +1,5 @@
 package hsf.fa25.pe.demo_pe3.config;
 
-
 import hsf.fa25.pe.demo_pe3.entity.SonyAccounts;
 import hsf.fa25.pe.demo_pe3.entity.SonyCategories;
 import hsf.fa25.pe.demo_pe3.entity.SonyProducts;
@@ -15,6 +14,7 @@ import java.time.LocalDate;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
+
     @Autowired
     AccountService accountsSerivce;
     @Autowired
@@ -24,31 +24,53 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        ensureAccount("0888111222", "!Pass1", 1);
-        ensureAccount("0888333444", "!Pass2", 2);
-        ensureAccount("0888555666", "!Pass3", 3);
+        // ===== Accounts (theo bảng) =====
+        ensureAccount("0905111111", "@1", 1);
+        ensureAccount("0905222222", "@1", 2);
+        ensureAccount("0905333333", "@1", 3);
 
-        SonyCategories gaming = ensureCategory("Gaming", "active");
-        SonyCategories speakers = ensureCategory("Speakers", "active");
-        SonyCategories storage = ensureCategory("Storage", "inactive");
+        // ===== Categories (theo bảng) =====
+        SonyCategories headPhone = ensureCategory("HeadPhone", "active");
+        SonyCategories cameras   = ensureCategory("Cameras",   "active");
+        SonyCategories tvs       = ensureCategory("TVs",       "active");
 
-        if (gaming == null || speakers == null || storage == null) {
+        if (headPhone == null || cameras == null || tvs == null) {
             return;
         }
 
-        ensureProduct("PlayStation 5 Console", 500, 25,
-                LocalDate.of(2025, 1, 10), gaming);
-        ensureProduct("SRS-XV900 X-Series Speaker", 900, 12,
-                LocalDate.of(2025, 2, 15), speakers);
-        ensureProduct("CFexpress Type B Memory Card", 400, 50,
-                LocalDate.of(2025, 3, 20), storage);
-        ensureProduct("INZONE H9 Wireless Gaming Headset", 300, 30,
-                LocalDate.of(2025, 4, 5), gaming);
+        // ===== Products (theo bảng) =====
+        ensureProduct(
+                "Alpha 1 II - Full-frame Mirrorless",
+                6000, 3,
+                LocalDate.of(2025, 3, 3),
+                cameras
+        );
+
+        ensureProduct(
+                "Alpha 7C II – Full-frame",
+                2000, 5,
+                LocalDate.of(2025, 4, 4),
+                cameras
+        );
+
+        ensureProduct(
+                "BRAVIA 8 OLED 4K HDR TV",
+                2500, 10,
+                LocalDate.of(2025, 1, 1),
+                tvs
+        );
+
+        ensureProduct(
+                "LinkBuds Fit Truly Wireless Noise Canceling",
+                180, 15,
+                LocalDate.of(2025, 3, 3),
+                headPhone
+        );
     }
 
     private void ensureAccount(String phone, String password, int roleId) {
         if (accountsSerivce.getAccounts(phone, password) != null) {
-            return;
+            return; //đã   tồn tại
         }
         SonyAccounts account = new SonyAccounts();
         account.setPhone(phone);
@@ -59,19 +81,19 @@ public class DataInitializer implements CommandLineRunner {
 
     private SonyCategories ensureCategory(String name, String status) {
         SonyCategories category = categoriesService.getCategoryByCateName(name);
-        if (category != null) {
-            return category;
-        }
+        if (category != null) return category;
+
         SonyCategories newCategory = new SonyCategories();
         newCategory.setCateName(name);
         newCategory.setStatus(status);
-        return categoriesService.addSonyCategories(newCategory) ?
-                categoriesService.getCategoryByCateName(name) : null;
+
+        boolean ok = categoriesService.addSonyCategories(newCategory);
+        return ok ? categoriesService.getCategoryByCateName(name) : null;
     }
 
     private void ensureProduct(String name, int price, int stock, LocalDate createdAt, SonyCategories category) {
         if (productsService.getSonyProductsByProductName(name) != null) {
-            return;
+            return; // đã tồn tại
         }
         SonyProducts product = new SonyProducts();
         product.setProductName(name);
