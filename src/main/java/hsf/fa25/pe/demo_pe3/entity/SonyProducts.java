@@ -33,7 +33,7 @@ public class SonyProducts {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    @Column(name = "createAt", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDate createAt;
 
     // 👇 Tên field là "category" (quan trọng để khớp mappedBy ở Category)
